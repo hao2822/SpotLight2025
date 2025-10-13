@@ -21,12 +21,26 @@ public class PlayerPlatformer : MonoBehaviour
     public float   checkRadius = 0.2f;
     public LayerMask groundLayer;
 
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
     float   horizontal;      // -1,0,1  原始输入
     bool    jumpReq;         // 缓存按键（在 Update 里收输入）
     bool    isGrounded;
 
-    void Awake() => rb = GetComponent<Rigidbody2D>();
+    public SkillManager skillManager;
+
+        void Awake()
+        {
+            rb = GetComponent<Rigidbody2D>();
+            skillManager = GetComponent<SkillManager>();
+        }
+
+        public void RestoreScale() => transform.localScale = Vector3.one;
+
+        public void RestoreGravity()
+        {
+            Physics2D.gravity = new Vector2(0, -9.81f);
+            transform.Rotate(-180, 0, 0); // 翻回来
+        }
 
     /* 1. 只在 Update 收输入 —— 不碰物理 */
     void Update()
